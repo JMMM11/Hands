@@ -1,6 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { Hand3D } from "./hand-3d"
 
 interface GestureGuideProps {
   currentGesture: string | null
@@ -11,8 +12,8 @@ const gestures = [
     id: "heart",
     name: "Corazón Latiendo",
     description: "Cierra ambos puños",
-    leftHand: "✊",
-    rightHand: "✊",
+    leftFingers: { count: 0, isClosed: true },
+    rightFingers: { count: 0, isClosed: true },
     effect: "❤️ Corazón 3D que late",
     color: "text-pink-400",
     bgColor: "bg-pink-500/20",
@@ -22,8 +23,8 @@ const gestures = [
     id: "sphere-right",
     name: "Esfera Derecha",
     description: "Puño izquierdo + Mano derecha abierta",
-    leftHand: "✊",
-    rightHand: "🖐️",
+    leftFingers: { count: 0, isClosed: true },
+    rightFingers: { count: 5, isOpen: true },
     effect: "🔮 Esfera en mano derecha",
     color: "text-cyan-400",
     bgColor: "bg-cyan-500/20",
@@ -33,8 +34,8 @@ const gestures = [
     id: "sphere-left",
     name: "Esfera Izquierda",
     description: "Mano izquierda abierta + Puño derecho",
-    leftHand: "🖐️",
-    rightHand: "✊",
+    leftFingers: { count: 5, isOpen: true },
+    rightFingers: { count: 0, isClosed: true },
     effect: "🔮 Esfera en mano izquierda",
     color: "text-cyan-400",
     bgColor: "bg-cyan-500/20",
@@ -44,8 +45,8 @@ const gestures = [
     id: "explosion",
     name: "Explosión",
     description: "Ambas manos abiertas",
-    leftHand: "🖐️",
-    rightHand: "🖐️",
+    leftFingers: { count: 5, isOpen: true },
+    rightFingers: { count: 5, isOpen: true },
     effect: "💥 Partículas explotan",
     color: "text-orange-400",
     bgColor: "bg-orange-500/20",
@@ -54,9 +55,9 @@ const gestures = [
   {
     id: "text-1",
     name: "Texto: HOLA",
-    description: "1 dedo levantado (cualquier mano)",
-    leftHand: "☝️",
-    rightHand: "—",
+    description: "1 dedo levantado",
+    leftFingers: { count: 1, isOpen: false },
+    rightFingers: { count: 1, isOpen: false },
     effect: "✨ Muestra 'HOLA'",
     color: "text-violet-400",
     bgColor: "bg-violet-500/20",
@@ -66,8 +67,8 @@ const gestures = [
     id: "text-2",
     name: "Texto: BIENVENIDO",
     description: "2 dedos levantados",
-    leftHand: "✌️",
-    rightHand: "—",
+    leftFingers: { count: 2, isOpen: false },
+    rightFingers: { count: 2, isOpen: false },
     effect: "✨ Muestra 'BIENVENIDO'",
     color: "text-violet-400",
     bgColor: "bg-violet-500/20",
@@ -77,8 +78,8 @@ const gestures = [
     id: "text-3",
     name: "Texto: GRACIAS",
     description: "3 dedos levantados",
-    leftHand: "🤟",
-    rightHand: "—",
+    leftFingers: { count: 3, isOpen: false },
+    rightFingers: { count: 3, isOpen: false },
     effect: "✨ Muestra 'GRACIAS'",
     color: "text-violet-400",
     bgColor: "bg-violet-500/20",
@@ -88,8 +89,8 @@ const gestures = [
     id: "text-4",
     name: "Texto: INCREÍBLE",
     description: "4 dedos levantados",
-    leftHand: "🖖",
-    rightHand: "—",
+    leftFingers: { count: 4, isOpen: false },
+    rightFingers: { count: 4, isOpen: false },
     effect: "✨ Muestra 'INCREÍBLE'",
     color: "text-violet-400",
     bgColor: "bg-violet-500/20",
@@ -98,9 +99,9 @@ const gestures = [
   {
     id: "text-5",
     name: "Texto: BRAVO",
-    description: "5 dedos levantados (solo una mano)",
-    leftHand: "🖐️",
-    rightHand: "—",
+    description: "5 dedos levantados (mano abierta)",
+    leftFingers: { count: 5, isOpen: true },
+    rightFingers: { count: 5, isOpen: true },
     effect: "✨ Muestra 'BRAVO'",
     color: "text-violet-400",
     bgColor: "bg-violet-500/20",
@@ -111,16 +112,15 @@ const gestures = [
 export function GestureGuide({ currentGesture }: GestureGuideProps) {
   return (
     <div className="absolute bottom-4 left-4 right-4 z-20 pointer-events-auto">
-      <div className="bg-black/80 backdrop-blur-xl rounded-2xl border border-white/10 p-4 max-w-4xl mx-auto">
+      <div className="bg-black/80 backdrop-blur-xl rounded-2xl border border-white/10 p-4 max-w-6xl mx-auto">
         <h2 className="text-white font-bold text-lg mb-3 text-center">
-          🎮 Guía de Gestos — Usa tus manos para controlar las partículas
+          🎮 Guía de Gestos — Usa tus manos para controlar
         </h2>
-        
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {gestures.map((gesture) => {
-            const isActive = currentGesture === gesture.id || 
-              (currentGesture?.startsWith("text-") && gesture.id.startsWith("text-") && currentGesture === gesture.id)
-            
+            const isActive = currentGesture === gesture.id
+
             return (
               <div
                 key={gesture.id}
@@ -131,10 +131,20 @@ export function GestureGuide({ currentGesture }: GestureGuideProps) {
                     : "bg-white/5 border-white/10 hover:bg-white/10"
                 )}
               >
-                <div className="flex justify-center gap-2 text-2xl mb-1">
-                  <span>{gesture.leftHand}</span>
-                  <span className="text-white/30">+</span>
-                  <span>{gesture.rightHand}</span>
+                <div className="flex justify-center gap-2 mb-2">
+                  <Hand3D
+                    fingerCount={gesture.leftFingers.count}
+                    isOpen={gesture.leftFingers.isOpen || false}
+                    isClosed={gesture.leftFingers.isClosed || false}
+                    size="sm"
+                  />
+                  <span className="text-white/30 text-xs self-center">+</span>
+                  <Hand3D
+                    fingerCount={gesture.rightFingers.count}
+                    isOpen={gesture.rightFingers.isOpen || false}
+                    isClosed={gesture.rightFingers.isClosed || false}
+                    size="sm"
+                  />
                 </div>
                 <p className={cn("text-xs font-bold text-center", isActive ? gesture.color : "text-white/80")}>
                   {gesture.name}
@@ -146,9 +156,9 @@ export function GestureGuide({ currentGesture }: GestureGuideProps) {
             )
           })}
         </div>
-        
+
         <p className="text-white/40 text-xs text-center mt-3">
-          💡 Tip: Mantén las manos dentro del encuadre de la cámara y con buena iluminación
+          💡 Tip: Mantén las manos dentro del encuadre con buena iluminación para que el sistema las detecte
         </p>
       </div>
     </div>
