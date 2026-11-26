@@ -312,7 +312,7 @@ export default function HandGestureVisualizer() {
           heartMode = true
           sphereMode = "none"
           explosionMode = false
-          setStatus({ text: "❤️ CORAZÓN LATIENDO", color: "#ff3366" })
+          setStatus({ text: "CORAZÓN LATIENDO", color: "#ff3366" })
           setCurrentGesture("heart")
         }
         // Mano izquierda cerrada + derecha abierta = esfera en mano derecha
@@ -320,7 +320,7 @@ export default function HandGestureVisualizer() {
           sphereMode = "right"
           heartMode = false
           explosionMode = false
-          setStatus({ text: "🔮 ESFERA DERECHA", color: "#00ffcc" })
+          setStatus({ text: "ESFERA DERECHA", color: "#00ffcc" })
           setCurrentGesture("sphere-right")
         }
         // Mano derecha cerrada + izquierda abierta = esfera en mano izquierda
@@ -328,7 +328,7 @@ export default function HandGestureVisualizer() {
           sphereMode = "left"
           heartMode = false
           explosionMode = false
-          setStatus({ text: "🔮 ESFERA IZQUIERDA", color: "#00ffcc" })
+          setStatus({ text: "ESFERA IZQUIERDA", color: "#00ffcc" })
           setCurrentGesture("sphere-left")
         }
         // Ambas manos abiertas = explosión
@@ -336,7 +336,7 @@ export default function HandGestureVisualizer() {
           explosionMode = true
           sphereMode = "none"
           heartMode = false
-          setStatus({ text: "💥 EXPLOSIÓN", color: "#ff8800" })
+          setStatus({ text: "EXPLOSIÓN", color: "#ff8800" })
           setCurrentGesture("explosion")
         }
         // Mostrar texto según dedos levantados
@@ -350,12 +350,12 @@ export default function HandGestureVisualizer() {
               currentTextIndex = maxF - 1
               createTextTarget(messages[currentTextIndex])
             }
-            setStatus({ text: `✨ ${messages[currentTextIndex]}`, color: "#ffffff" })
+            setStatus({ text: messages[currentTextIndex], color: "#ffffff" })
             setCurrentGesture(`text-${maxF}`)
           } else {
             targetPositions = []
             currentTextIndex = -1
-            setStatus({ text: "👋 MUESTRA TUS MANOS", color: "#00ff00" })
+            setStatus({ text: "MUESTRA TUS MANOS", color: "#00ff00" })
             setCurrentGesture(null)
           }
         }
@@ -366,7 +366,7 @@ export default function HandGestureVisualizer() {
         explosionMode = false
         targetPositions = []
         currentTextIndex = -1
-        setStatus({ text: "👋 MUESTRA TUS MANOS", color: "#00ff00" })
+        setStatus({ text: "MUESTRA TUS MANOS", color: "#00ff00" })
         setCurrentGesture(null)
       }
     }
