@@ -27,12 +27,13 @@ const gestures = [
 
 export function GestureGuide({ currentGesture }: GestureGuideProps) {
   return (
-    <div className="absolute bottom-4 left-4 right-4 z-20 pointer-events-auto">
-      <div className="bg-black/80 backdrop-blur-xl rounded-2xl border border-white/10 p-4 max-w-6xl mx-auto">
-        <h2 className="text-white font-bold text-lg mb-1 text-center">Guía de gestos</h2>
-        <p className="text-white/50 text-xs text-center mb-3">Los dedos en color son los que debes levantar</p>
+    <div className="absolute bottom-3 left-3 right-3 z-20 pointer-events-auto">
+      <div className="bg-black/70 backdrop-blur-xl rounded-xl border border-white/10 p-2 max-w-5xl mx-auto">
+        <p className="text-white/50 text-[11px] text-center mb-1.5">
+          <span className="text-white font-semibold">Gestos</span> · los dedos en color son los que levantas
+        </p>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-1.5">
           {gestures.map((gesture) => {
             const isActive = currentGesture === gesture.id
             const { color } = gesture
@@ -41,30 +42,26 @@ export function GestureGuide({ currentGesture }: GestureGuideProps) {
               <div
                 key={gesture.id}
                 className={cn(
-                  "rounded-xl p-3 border-2 transition-all duration-300",
+                  "rounded-lg px-1 py-1.5 border transition-all duration-300",
                   isActive ? `${color.bg} ${color.border} scale-105 shadow-lg` : "bg-white/5 border-white/10 hover:bg-white/10"
                 )}
               >
-                <div className="flex justify-center items-center gap-1 mb-2">
+                <div className="flex justify-center items-center mb-1">
                   {gesture.hands.length === 2 ? (
                     <>
-                      <Hand3D fingers={gesture.hands[0]} side="left" color={color.hex} className="size-16" />
-                      <Hand3D fingers={gesture.hands[1]} side="right" color={color.hex} className="size-16" />
+                      <Hand3D fingers={gesture.hands[0]} side="left" color={color.hex} className="size-10" />
+                      <Hand3D fingers={gesture.hands[1]} side="right" color={color.hex} className="size-10" />
                     </>
                   ) : (
-                    <Hand3D fingers={gesture.hands[0]} side="right" color={color.hex} className="size-16" />
+                    <Hand3D fingers={gesture.hands[0]} side="right" color={color.hex} className="size-10" />
                   )}
                 </div>
-                <p className={cn("text-xs font-bold text-center", isActive ? color.text : "text-white/80")}>{gesture.name}</p>
-                <p className="text-[10px] text-white/50 text-center mt-1">{gesture.description}</p>
+                <p className={cn("text-[11px] font-bold text-center leading-tight", isActive ? color.text : "text-white/80")}>{gesture.name}</p>
+                <p className="text-[9px] text-white/50 text-center leading-tight mt-0.5">{gesture.description}</p>
               </div>
             )
           })}
         </div>
-
-        <p className="text-white/40 text-xs text-center mt-3">
-          Mantén las manos dentro del encuadre y con buena iluminación
-        </p>
       </div>
     </div>
   )
