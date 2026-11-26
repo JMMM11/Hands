@@ -15,3 +15,8 @@ next.user-config.*
 node_modules/
 .next/
 .DS_Store
+
+# Archivos temporales de `npm run dev` (distDir es docs)
+docs/dev/
+docs/cache/
+docs/types/
